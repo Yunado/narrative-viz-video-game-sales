@@ -16,7 +16,7 @@ d3.tsv("https://unpkg.com/world-atlas@1.1.4/world/110m.tsv").then(data => consol
 
 // Load world atlas TopoJSON data
 Promise.all([
-    d3.json("https://unpkg.com/world-atlas@1.1.4/world/110m.json"),
+    d3.json("https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/main/110m_modified.json"),
     d3.tsv("https://unpkg.com/world-atlas@1.1.4/world/110m.tsv"),
 ]).then(function ([world, tsvData]) {
     // Create a lookup object for ISO_N3 codes from TSV data
@@ -66,7 +66,7 @@ Promise.all([
         .attr("stroke-width", 0.5)
         .on("mouseover", function (d) {
             const isoN3 = d.target.__data__.id; // ISO_N3 code is used as the id in world-110m.json
-            console.log(d);
+            console.log(isoN3);
             const continent = isoN3Lookup[isoN3].continent;
             const country = isoN3Lookup[isoN3].name;
             console.log(continent)
