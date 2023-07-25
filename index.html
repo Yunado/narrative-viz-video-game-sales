@@ -12,6 +12,24 @@
     <div class="container">
         <h1>Global Video Game Sales</h1>
         <div class="visualization" id="worldmap"></div>
+        <div id="my_dataviz"></div>
+        <div slider id="slider-distance">
+            <div>
+                <div inverse-left style="width:70%;"></div>
+                <div inverse-right style="width:70%;"></div>
+                <div range style="left:0%;right:0%;"></div>
+                <span thumb style="left:0%;"></span>
+                <span thumb style="left:100%;"></span>
+                <div sign style="left:0%;">
+                    <span id="value">1980</span>
+                </div>
+                <div sign style="left:100%;">
+                    <span id="value">2020</span>
+                </div>
+            </div>
+            <input id="age1Slider" type="range" name="info[age1]" value="1980" max="2020" min="1980" step="1" />
+            <input id="age2Slider" type="range" name="info[age2]" value="2020" max="2020" min="1980" step="1" />
+        </div>
         <div class="narrative-text">
             <p>Introduction to the visualization...</p>
         </div>
