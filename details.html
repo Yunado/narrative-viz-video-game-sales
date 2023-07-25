@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Region Details</title>
+</head>
+
+<body>
+    <h1>Region Details</h1>
+    <div id="regionName"></div>
+
+    <script>
+        // Get the region name from the URL query parameter
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const region = urlParams.get('region');
+
+        // Display the region name on the page
+        const regionNameDiv = document.getElementById('regionName');
+        regionNameDiv.textContent = `Region: ${decodeURIComponent(region)}`;
+    </script>
+</body>
+
+</html>

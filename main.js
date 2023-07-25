@@ -90,7 +90,7 @@ Promise.all([
         { long: 13, lat: 50, name: "Europe", sales: 0 },
         { long: 140, lat: 36, name: "Japan", sales: 0 },
         { long: 0, lat: 0, name: "Rest of the World", sales: 0 },
-        { long: -130, lat: -40, name: "Total Game Sales", sales: 0 },
+        { long: -130, lat: -40, name: "Worldwide", sales: 0 },
     ];
 
     function updateYearRange() {
@@ -204,5 +204,17 @@ Promise.all([
         .on("mousemove", mousemove)
         .on("mouseleave", mouseleave)
     //================================================================
+
+    //Redirect to other scene =================================================================
+    svg.selectAll("circle")
+        .on("click", function (event, d) {
+            navigateToDetailsPage(d.name);
+        });
+
+    function navigateToDetailsPage(region) {
+        // Navigate to the details page with the region name as a query parameter
+        window.location.href = `details.html?region=${encodeURIComponent(region)}`;
+    }
+    //=================================================================
 });
 
