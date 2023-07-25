@@ -12,55 +12,6 @@ const projection = d3.geoNaturalEarth1()
 
 const path = d3.geoPath().projection(projection);
 
-d3.tsv("https://unpkg.com/world-atlas@1.1.4/world/110m.tsv").then(data => console.log(data))
-
-// create slider: https://stackoverflow.com/questions/61933235/range-slider-in-html-javascript?noredirect=1&lq=1
-const startYearSlider = document.getElementById('age1Slider');
-const endYearSlider = document.getElementById('age2Slider');
-
-const defaultStartYear = 1980;
-const defaultEndYear = 2020;
-
-startYearSlider.value = 1980;
-endYearSlider.value = 2020;
-
-let startYear = defaultStartYear;
-let endYear = defaultEndYear;
-
-// Function for the first slider (age1Slider)
-startYearSlider.addEventListener('input', function age1() {
-    this.value = Math.min(this.value, this.parentNode.childNodes[5].value - 1);
-    let value = ((this.value - parseInt(this.min)) / (parseInt(this.max) - parseInt(this.min))) * 100;
-    var children = this.parentNode.childNodes[1].childNodes;
-    children[1].style.width = value + '%';
-    children[5].style.left = value + '%';
-    children[7].style.left = value + '%';
-    children[11].style.left = value + '%';
-    children[11].childNodes[1].innerHTML = this.value;
-    startYear = parseInt(this.value);
-    updateYearRange();
-});
-
-// Function for the second slider (age2Slider)
-endYearSlider.addEventListener('input', function age2() {
-    this.value = Math.max(this.value, this.parentNode.childNodes[3].value - (-1));
-    let value = ((this.value - parseInt(this.min)) / (parseInt(this.max) - parseInt(this.min))) * 100;
-    var children = this.parentNode.childNodes[1].childNodes;
-    children[3].style.width = (100 - value) + '%';
-    children[5].style.right = (100 - value) + '%';
-    children[9].style.left = value + '%';
-    children[13].style.left = value + '%';
-    children[13].childNodes[1].innerHTML = this.value;
-    endYear = parseInt(this.value);
-    updateYearRange();
-});
-
-function updateYearRange() {
-    console.log('Start Year:', startYear);
-    console.log('End Year:', endYear);
-    // You can add any further logic related to the sliders here
-}
-
 // Load world atlas TopoJSON data
 Promise.all([
     d3.json("https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/main/110m_modified.json"),
@@ -92,7 +43,7 @@ Promise.all([
     // console.log(naCountries);
     // console.log(japanCountries);
 
-    // Append map paths and apply hover effect
+    // Append map background with different colors for continent and country
     svg.append("g")
         .selectAll("path")
         .data(topojson.feature(world, world.objects.countries).features)
@@ -112,47 +63,7 @@ Promise.all([
             }
         })
         .attr("stroke", "#fff")
-        .attr("stroke-width", 0.5)
-        .on("mouseover", function (d) {
-            const isoN3 = d.target.__data__.id; // ISO_N3 code is used as the id in world-110m.json
-            console.log(isoN3);
-            const continent = isoN3Lookup[isoN3].continent;
-            const country = isoN3Lookup[isoN3].name;
-            console.log(continent)
-            console.log(country)
-            if (continent === "North America") {
-                d3.select(this).attr("fill", "mediumseagreen");
-            }
-            else if (continent === "Europe") {
-                d3.select(this).attr("fill", "lightblue");
-            }
-            else if (country === "Japan") {
-                d3.select(this).attr("fill", "orangered");
-            }
-            else {
-                d3.select(this).attr("fill", "beige"); // Change the fill color on mouseover for other countries
-            }
-        })
-        .on("mouseout", function (d) {
-            const isoN3 = d.target.__data__.id; // ISO_N3 code is used as the id in world-110m.json
-            console.log(isoN3);
-            const continent = isoN3Lookup[isoN3].continent;
-            const country = isoN3Lookup[isoN3].name;
-            console.log(continent)
-            console.log(country)
-            if (continent === "North America") {
-                d3.select(this).attr("fill", "mediumseagreen");
-            }
-            else if (continent === "Europe") {
-                d3.select(this).attr("fill", "lightblue");
-            }
-            else if (country === "Japan") {
-                d3.select(this).attr("fill", "orangered");
-            }
-            else {
-                d3.select(this).attr("fill", "beige"); // Change the fill color on mouseover for other countries
-            }
-        });
+        .attr("stroke-width", 0.5);
     //================================================================
 
     // GAME DATA ================================================================
@@ -172,22 +83,86 @@ Promise.all([
     // Output the result
     console.log("Min Year:", minYear);
     console.log("Max Year:", maxYear);
-    // =================================================================
 
-    // Tool Tip ================================================================
     // Create data for circles:
     const markers = [
-        { long: -97.5, lat: 55, name: "Center of North America" },
-        { long: 13, lat: 50, name: "Center of Europe" },
-        { long: 140, lat: 36, name: "Center of Japan" },
-        { long: 0, lat: 0, name: "Center of Rest of the World" },
-        { long: -130, lat: -40, name: "Total Game Sales" },
+        { long: -97.5, lat: 55, name: "North America", sales: 0 },
+        { long: 13, lat: 50, name: "Europe", sales: 0 },
+        { long: 140, lat: 36, name: "Japan", sales: 0 },
+        { long: 0, lat: 0, name: "Rest of the World", sales: 0 },
+        { long: -130, lat: -40, name: "Total Game Sales", sales: 0 },
     ];
 
-    // create a tooltip
+    function updateYearRange() {
+        console.log('Start Year:', startYear);
+        console.log('End Year:', endYear);
+        // Query sales data for the range [startYear, endYear)
+        const salesData = filteredCSVData.filter(d => d.Year >= startYear && d.Year < endYear);
+
+        // Calculate the total sales for each region
+        const totalNAsales = d3.sum(salesData, d => +d.NA_Sales).toFixed(2);
+        const totalEUsales = d3.sum(salesData, d => +d.EU_Sales).toFixed(2);
+        const totalJPsales = d3.sum(salesData, d => +d.JP_Sales).toFixed(2);
+        const totalOtherSales = d3.sum(salesData, d => +d.Other_Sales).toFixed(2);
+        const totalGlobalSales = d3.sum(salesData, d => +d.Global_Sales).toFixed(2);
+
+        // Update the markers data with the calculated sales values
+        markers[0].sales = totalNAsales;
+        markers[1].sales = totalEUsales;
+        markers[2].sales = totalJPsales;
+        markers[3].sales = totalOtherSales;
+        markers[4].sales = totalGlobalSales;
+        console.log(markers);
+
+        document.getElementById('sliderNote').textContent = `Sales From [${startYear}, ${endYear})`;
+    }
+    // =================================================================
+
+    // create slider: https://stackoverflow.com/questions/61933235/range-slider-in-html-javascript?noredirect=1&lq=1
+    const startYearSlider = document.getElementById('year1Slider');
+    const endYearSlider = document.getElementById('year2Slider');
+
+    const defaultStartYear = 1980;
+    const defaultEndYear = 2021;
+
+    startYearSlider.value = defaultStartYear;
+    endYearSlider.value = defaultEndYear;
+
+    let startYear = defaultStartYear;
+    let endYear = defaultEndYear;
+    updateYearRange();
+
+    // Function for the left slider handle
+    startYearSlider.addEventListener('input', function year1() {
+        this.value = Math.min(this.value, this.parentNode.childNodes[5].value - 1);
+        let value = ((this.value - parseInt(this.min)) / (parseInt(this.max) - parseInt(this.min))) * 100;
+        var children = this.parentNode.childNodes[1].childNodes;
+        children[1].style.width = value + '%';
+        children[5].style.left = value + '%';
+        children[7].style.left = value + '%';
+        children[11].style.left = value + '%';
+        children[11].childNodes[1].innerHTML = this.value;
+        startYear = parseInt(this.value);
+        updateYearRange();
+    });
+
+    // Function for the right slider handle
+    endYearSlider.addEventListener('input', function year2() {
+        this.value = Math.max(this.value, this.parentNode.childNodes[3].value - (-1));
+        let value = ((this.value - parseInt(this.min)) / (parseInt(this.max) - parseInt(this.min))) * 100;
+        var children = this.parentNode.childNodes[1].childNodes;
+        children[3].style.width = (100 - value) + '%';
+        children[5].style.right = (100 - value) + '%';
+        children[9].style.left = value + '%';
+        children[13].style.left = value + '%';
+        children[13].childNodes[1].innerHTML = this.value;
+        endYear = parseInt(this.value);
+        updateYearRange();
+    });
+
+    // Tool Tip ================================================================
     const Tooltip = d3.select("#my_dataviz")
         .append("div")
-        .attr("class", "tooltip")
         .style("opacity", 1)
         .style("background-color", "white")
         .style("border", "solid")
@@ -203,7 +178,7 @@ Promise.all([
     function mousemove(event, d) {
         const tooltipDiv = d3.select("#my_dataviz");
         tooltipDiv.style("opacity", 1)
-            .html(d.name + "<br>" + "long: " + d.long + "<br>" + "lat: " + d.lat)
+            .html(d.name + "<br>" + "Game Sold: " + d.sales + "M")
             .style("left", (event.pageX) + "px")
             .style("top", (event.pageY) + "px"); // Show the tooltip at the location of the mouse pointer
     }
