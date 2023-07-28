@@ -138,12 +138,12 @@ d3.csv(
     .attr("cy", (d) => yScale(d.sales))
     .attr("r", 5)
     .attr("fill", (d) =>
-      d.year >= startYear && d.year <= endYear ? "lightcoral" : "steelblue"
+      d.year >= startYear && d.year < endYear ? "lightcoral" : "steelblue"
     );
 
   function updateDotColors() {
     dots.attr("fill", (d) =>
-      d.year >= startYear && d.year <= endYear ? "lightcoral" : "steelblue"
+      d.year >= startYear && d.year < endYear ? "lightcoral" : "steelblue"
     );
   }
 
