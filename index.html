@@ -1,46 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Narrative Visualization with D3.js</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <h1>An Interactive Journey Through Video Game Sales</h1>
-        <div class="visualization" id="worldmap"></div>
-        <div id="my_dataviz"></div>
-        <div slider id="slider-distance">
-            <div>
-                <div inverse-left style="width:70%;"></div>
-                <div inverse-right style="width:70%;"></div>
-                <div range style="left:0%;right:0%;"></div>
-                <span thumb style="left:0%;"></span>
-                <span thumb style="left:100%;"></span>
-                <div sign style="left:0%;">
-                    <span id="value">1980</span>
-                </div>
-                <div sign style="left:100%;">
-                    <span id="value">2021</span>
-                </div>
-            </div>
-            <input id="year1Slider" type="range" name="info[age1]" value="1980" max="2021" min="1980" step="1" />
-            <input id="year2Slider" type="range" name="info[age2]" value="2021" max="2021" min="1980" step="1" />
+      <h1>An Interactive Journey Through Video Game Sales</h1>
+      <div class="visualization" id="worldmap"></div>
+      <div id="my_dataviz"></div>
+      <div slider id="slider-distance">
+        <div>
+          <div inverse-left style="width: 70%"></div>
+          <div inverse-right style="width: 70%"></div>
+          <div range style="left: 0%; right: 0%"></div>
+          <span thumb style="left: 0%"></span>
+          <span thumb style="left: 100%"></span>
+          <div sign style="left: 0%">
+            <span id="value">1980</span>
+          </div>
+          <div sign style="left: 100%">
+            <span id="value">2021</span>
+          </div>
         </div>
-        <div id="sliderNote"></div>
-        <div class="button-container">
-            <button id="playButton">Play</button>
-        </div>
-        <div class="narrative-text">
-            <p>Introduction to the visualization...</p>
-        </div>
+        <input
+          id="year1Slider"
+          type="range"
+          name="info[age1]"
+          value="1980"
+          max="2021"
+          min="1980"
+          step="1"
+        />
+        <input
+          id="year2Slider"
+          type="range"
+          name="info[age2]"
+          value="2021"
+          max="2021"
+          min="1980"
+          step="1"
+        />
+      </div>
+      <div id="sliderNote"></div>
+      <div class="button-container">
+        <button id="playButton">Play</button>
+      </div>
+      <div class="narrative-text">
+        <p>Introduction to the visualization...</p>
+      </div>
     </div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
     <script src="main.js"></script>
-</body>
-
+  </body>
 </html>
