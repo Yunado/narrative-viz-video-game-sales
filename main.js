@@ -226,15 +226,7 @@ Promise.all([
   // =================================================================
 
   // Tool Tip ================================================================
-  const Tooltip = d3
-    .select("#my_dataviz")
-    .append("div")
-    .style("opacity", 1)
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "2px")
-    .style("border-radius", "5px")
-    .style("padding", "5px");
+  const Tooltip = d3.select("#my_dataviz").append("div");
 
   // Three function that change the tooltip when user hover / move / leave a cell
   const mouseover = function (event, d) {
@@ -264,10 +256,9 @@ Promise.all([
 
   // Add circles and text elements:
   const circles = svg
-    .selectAll("myCircles")
+    .selectAll("circle")
     .data(markers)
     .join("g")
-    .attr("class", "circleGroup")
     .on("mouseover", mouseover)
     .on("mousemove", mousemove)
     .on("mouseleave", mouseleave)

@@ -42,6 +42,13 @@ h1 {
   transition: 0.3s;
 }
 
+.circleGroup:hover {
+  cursor: pointer;
+  stroke: darkred;
+  stroke-width: 4px;
+  transition: 0.3s;
+}
+
 #my_dataviz {
   position: absolute;
   top: 0;
@@ -55,6 +62,7 @@ h1 {
   border-radius: 5px;
   font-size: 14px;
   color: black;
+  transition: 0.15s;
 }
 
 .button-container {

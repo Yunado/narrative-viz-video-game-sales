@@ -79,6 +79,31 @@ d3.csv(
   console.log(salesDataByYear);
   // =================================================================
 
+  // Tool Tip ================================================================
+  const Tooltip = d3.select("#lineChart").append("div");
+
+  // Function to show the tooltip on mouseover
+  function mouseover(event, d) {
+    Tooltip.style("opacity", 1);
+  }
+
+  // Function to move the tooltip along with the mouse pointer
+  function mousemove(event, d) {
+    const tooltipDiv = d3.select("#my_dataviz");
+    tooltipDiv
+      .style("opacity", 1)
+      .html(`Year: ${d.year}<br>Sales: ${d.sales}M`)
+      .style("left", event.pageX + "px")
+      .style("top", event.pageY - 10 + "px");
+  }
+
+  // Function to hide the tooltip on mouseleave
+  function mouseleave(event, d) {
+    const tooltipDiv = d3.select("#my_dataviz");
+    tooltipDiv.style("opacity", 0);
+  }
+  // =================================================================
+
   // Scatter Plot ==================================================================
   const margin = { top: 50, right: 50, bottom: 50, left: 50 };
   const chartWidth = width - margin.left - margin.right;
@@ -134,12 +159,16 @@ d3.csv(
     .data(salesDataArray)
     .enter()
     .append("circle")
+    .attr("class", "circleGroup")
     .attr("cx", (d) => xScale(d.year))
     .attr("cy", (d) => yScale(d.sales))
-    .attr("r", 5)
+    .attr("r", 6)
     .attr("fill", (d) =>
       d.year >= startYear && d.year < endYear ? "lightcoral" : "steelblue"
-    );
+    )
+    .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave);
 
   function updateDotColors() {
     dots.attr("fill", (d) =>
