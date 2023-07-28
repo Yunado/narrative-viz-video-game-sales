@@ -44,26 +44,26 @@ Promise.all([
     // console.log(japanCountries);
 
     // Append map background with different colors for continent and country
-    svg.append("g")
-        .selectAll("path")
-        .data(topojson.feature(world, world.objects.countries).features)
-        .enter().append("path")
-        .attr("d", path)
-        .attr("fill", function (d) {
-            console.log(d.id)
-            const isoN3 = d.id; // ISO_N3 code is used as the id in world-110m.json
-            if (naCountries[isoN3]) {
-                return "mediumseagreen"; // Fill color for North America (NA)
-            } else if (euCountries[isoN3]) {
-                return "lightblue"; // Fill color for Europe (EU)
-            } else if (japanCountries[isoN3]) {
-                return "orangered"; // Fill color for Japan (JP)
-            } else {
-                return "beige"; // Default fill color for other countries
-            }
-        })
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 0.5);
+    // svg.append("g")
+    //     .selectAll("path")
+    //     .data(topojson.feature(world, world.objects.countries).features)
+    //     .enter().append("path")
+    //     .attr("d", path)
+    //     .attr("fill", function (d) {
+    //         console.log(d.id)
+    //         const isoN3 = d.id; // ISO_N3 code is used as the id in world-110m.json
+    //         if (naCountries[isoN3]) {
+    //             return "mediumseagreen"; // Fill color for North America (NA)
+    //         } else if (euCountries[isoN3]) {
+    //             return "lightblue"; // Fill color for Europe (EU)
+    //         } else if (japanCountries[isoN3]) {
+    //             return "orangered"; // Fill color for Japan (JP)
+    //         } else {
+    //             return "beige"; // Default fill color for other countries
+    //         }
+    //     })
+    //     .attr("stroke", "#fff")
+    //     .attr("stroke-width", 0.5);
     //================================================================
 
     // GAME DATA ================================================================

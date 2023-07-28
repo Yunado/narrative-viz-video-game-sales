@@ -1,25 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Region Details</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <h1>Region Details</h1>
     <div id="regionName"></div>
-
-    <script>
-        // Get the region name from the URL query parameter
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const region = urlParams.get('region');
-
-        // Display the region name on the page
-        const regionNameDiv = document.getElementById('regionName');
-        regionNameDiv.textContent = `Region: ${decodeURIComponent(region)}`;
-    </script>
+    <div class="container">
+        <div id="my_dataviz"></div>
+        <div slider id="slider-distance">
+            <div>
+                <div inverse-left style="width:70%;"></div>
+                <div inverse-right style="width:70%;"></div>
+                <div range style="left:0%;right:0%;"></div>
+                <span thumb style="left:0%;"></span>
+                <span thumb style="left:100%;"></span>
+                <div sign style="left:0%;">
+                    <span id="value">1980</span>
+                </div>
+                <div sign style="left:100%;">
+                    <span id="value">2021</span>
+                </div>
+            </div>
+            <input id="year1Slider" type="range" name="info[age1]" value="1980" max="2021" min="1980" step="1" />
+            <input id="year2Slider" type="range" name="info[age2]" value="2021" max="2021" min="1980" step="1" />
+        </div>
+        <div id="sliderNote"></div>
+        <button id="playButton">Play</button>
+        <div class="narrative-text">
+            <p>Introduction to the visualization...</p>
+        </div>
+    </div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="details.js"></script>
 </body>
 
 </html>
