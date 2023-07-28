@@ -9,9 +9,9 @@
 </head>
 
 <body>
-    <h1>Region Details</h1>
-    <div id="regionName"></div>
     <div class="container">
+        <h1 id="pageTitle">Video Game Sales</h1>
+        <div class="visualization" id="lineChart"></div>
         <div id="my_dataviz"></div>
         <div slider id="slider-distance">
             <div>
@@ -31,7 +31,10 @@
             <input id="year2Slider" type="range" name="info[age2]" value="2021" max="2021" min="1980" step="1" />
         </div>
         <div id="sliderNote"></div>
-        <button id="playButton">Play</button>
+        <div class="button-container">
+            <button id="playButton">Play</button>
+            <button id="backButton">Back to World Map</button>
+        </div>
         <div class="narrative-text">
             <p>Introduction to the visualization...</p>
         </div>

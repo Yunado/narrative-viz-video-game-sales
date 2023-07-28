@@ -10,7 +10,7 @@
 
 <body>
     <div class="container">
-        <h1>Global Video Game Sales</h1>
+        <h1>An Interactive Journey Through Video Game Sales</h1>
         <div class="visualization" id="worldmap"></div>
         <div id="my_dataviz"></div>
         <div slider id="slider-distance">
@@ -31,11 +31,12 @@
             <input id="year2Slider" type="range" name="info[age2]" value="2021" max="2021" min="1980" step="1" />
         </div>
         <div id="sliderNote"></div>
-        <button id="playButton">Play</button>
+        <div class="button-container">
+            <button id="playButton">Play</button>
+        </div>
         <div class="narrative-text">
             <p>Introduction to the visualization...</p>
         </div>
-
     </div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>

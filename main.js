@@ -55,15 +55,15 @@ Promise.all([
             if (naCountries[isoN3]) {
                 return "mediumseagreen"; // Fill color for North America (NA)
             } else if (euCountries[isoN3]) {
-                return "lightblue"; // Fill color for Europe (EU)
+                return "LightSkyBlue"; // Fill color for Europe (EU)
             } else if (japanCountries[isoN3]) {
                 return "orangered"; // Fill color for Japan (JP)
             } else {
-                return "beige"; // Default fill color for other countries
+                return "Wheat"; // Default fill color for other countries
             }
         })
         .attr("stroke", "#fff")
-        .attr("stroke-width", 0.5);
+        .attr("stroke-width", 1);
     //================================================================
 
     // GAME DATA ================================================================
@@ -258,7 +258,7 @@ Promise.all([
         .attr("class", "circle")
         .style("fill", "#fff")
         .attr("stroke", "#69b3a2")
-        .attr("stroke-width", 3)
+        .attr("stroke-width", 5)
         .attr("fill-opacity", .4)
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
@@ -270,6 +270,7 @@ Promise.all([
         .attr("text-anchor", "middle")
         .style("cursor", "pointer")
         .style("font-size", "15px")
+        .style("font-weight", "bold")
         .style("user-select", "none") // Add this line to prevent text selection
         .text(d => d.sales + "M"); // Initial text content
 
@@ -296,8 +297,8 @@ Promise.all([
         });
 
     function navigateToDetailsPage(region) {
-        // Navigate to the details page with the region name as a query parameter
-        window.location.href = `details.html?region=${encodeURIComponent(region)}`;
+        // Navigate to the details page with the region name and slider values as query parameters
+        window.location.href = `details.html?region=${encodeURIComponent(region)}&startYear=${startYear}&endYear=${endYear}`;
     }
     //=================================================================
 });
