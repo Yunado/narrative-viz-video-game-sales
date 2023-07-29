@@ -1,60 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Region Details</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Region Details</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
 
-  <body>
-    <div class="container">
-      <h1 id="pageTitle">Video Game Sales</h1>
-      <div class="visualization" id="lineChart"></div>
-      <div id="my_dataviz"></div>
-      <div slider id="slider-distance">
-        <div>
-          <div inverse-left style="width: 70%"></div>
-          <div inverse-right style="width: 70%"></div>
-          <div range style="left: 0%; right: 0%"></div>
-          <span thumb style="left: 0%"></span>
-          <span thumb style="left: 100%"></span>
-          <div sign style="left: 0%">
-            <span id="value">1980</span>
-          </div>
-          <div sign style="left: 100%">
-            <span id="value">2021</span>
-          </div>
-        </div>
-        <input
-          id="year1Slider"
-          type="range"
-          name="info[age1]"
-          value="1980"
-          max="2021"
-          min="1980"
-          step="1"
-        />
-        <input
-          id="year2Slider"
-          type="range"
-          name="info[age2]"
-          value="2021"
-          max="2021"
-          min="1980"
-          step="1"
-        />
-      </div>
-      <div id="sliderNote"></div>
-      <div class="button-container">
-        <button id="playButton">Play</button>
-        <button id="backButton">Back to World Map</button>
-      </div>
-      <div class="narrative-text">
-        <p>Introduction to the visualization...</p>
-      </div>
-    </div>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="details.js"></script>
-  </body>
+	<body>
+		<div class="container">
+			<h1 id="pageTitle">Video Game Sales</h1>
+			<div class="visualization" id="lineChart"></div>
+			<div id="my_dataviz"></div>
+			<div slider id="slider-distance">
+				<div>
+					<div inverse-left style="width: 70%"></div>
+					<div inverse-right style="width: 70%"></div>
+					<div range style="left: 0%; right: 0%"></div>
+					<span thumb style="left: 0%"></span>
+					<span thumb style="left: 100%"></span>
+					<div sign style="left: 0%">
+						<span id="value">1980</span>
+					</div>
+					<div sign style="left: 100%">
+						<span id="value">2021</span>
+					</div>
+				</div>
+				<input id="year1Slider" type="range" name="info[age1]" value="1980" max="2021" min="1980" step="1" />
+				<input id="year2Slider" type="range" name="info[age2]" value="2021" max="2021" min="1980" step="1" />
+			</div>
+			<div id="sliderNote"></div>
+			<div class="button-container">
+				<button id="playButton">Play</button>
+				<button id="backButton">Back to World Map</button>
+			</div>
+			<div class="narrative-text">
+				<p>Introduction to the visualization...</p>
+			</div>
+		</div>
+		<script src="https://d3js.org/d3.v7.min.js"></script>
+		<script src="details.js"></script>
+	</body>
 </html>
