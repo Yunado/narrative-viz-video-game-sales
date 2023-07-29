@@ -75,6 +75,44 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	// Output the sales data object
 	console.log(salesDataByYear);
+
+	// Create an empty object to store the first year of game releases for each platform
+	const firstYearByPlatform = {};
+
+	// Loop through the filtered CSV data to find the first year of game releases for each platform
+	filteredCSVData.forEach((game) => {
+		const platform = game.Platform;
+		const year = +game.Year;
+
+		// If the platform is not yet recorded in the firstYearByPlatform object or if the current year is earlier than the recorded year for that platform, update the first year
+		if (!firstYearByPlatform[platform] || year < firstYearByPlatform[platform]) {
+			firstYearByPlatform[platform] = year;
+		}
+	});
+
+	// Output the result
+	console.log(firstYearByPlatform);
+
+	// Create an empty object to store the result
+	const platformsByYear = {};
+	const majorConsole = ['NES', 'SNES', 'PS', 'PS2', 'GBA', 'PSP', 'DS', 'X360', 'Wii', 'PS3', '3DS', 'PS4', 'XOne'];
+
+	// Loop through the firstYearByPlatform object
+	for (const platform in firstYearByPlatform) {
+		const year = firstYearByPlatform[platform];
+
+		if (majorConsole.includes(platform)) {
+			if (!platformsByYear[year]) {
+				platformsByYear[year] = [platform];
+			} else {
+				platformsByYear[year].push(platform);
+			}
+		}
+	}
+
+	// Output the result
+	console.log(platformsByYear);
+
 	// =================================================================
 
 	// Tool Tip ================================================================
@@ -93,6 +131,12 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 			.html(`Year: ${d.year}<br>Sales: ${d.sales}M`)
 			.style('left', event.pageX + 'px')
 			.style('top', event.pageY - 10 + 'px');
+
+		const plats = platformsByYear[d.year];
+		console.log(plats, d.year);
+		if (plats) {
+			tooltipDiv.html(`Year: ${d.year}<br>Sales: ${d.sales}M<br>Platform released on: ${plats}`);
+		}
 	}
 
 	// Function to hide the tooltip on mouseleave
@@ -102,7 +146,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	}
 	// =================================================================
 
-	// Scatter Plot ==================================================================
+	// Line Graph ==================================================================
 	const margin = { top: 50, right: 50, bottom: 50, left: 50 };
 	const chartWidth = width - margin.left - margin.right;
 	const chartHeight = height - margin.top - margin.bottom;
@@ -143,6 +187,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	let startYear = parseInt(urlParams.get('startYear'));
 	let endYear = parseInt(urlParams.get('endYear'));
+
 	// Draw the scatter plot points
 	const dots = chart
 		.selectAll('circle')
@@ -185,6 +230,40 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		.attr('text-anchor', 'middle')
 		.attr('transform', 'rotate(-90)')
 		.text('Sales (M)');
+	// =================================================================
+
+	// Annotation =================================================================
+	// Function to create annotations
+	function createAnnotations() {
+		const annotations = chart
+			.selectAll('.annotation')
+			.data(Object.entries(platformsByYear))
+			.enter()
+			.append('g')
+			.attr('class', 'annotation');
+
+		// Add lines pointing to the circles
+		annotations
+			.append('line')
+			.attr('x1', (d) => xScale(d[0]))
+			.attr('y1', (d) => yScale(salesDataByYear[d[0]]))
+			.attr('x2', (d) => xScale(d[0]) + 5) // Offset the line to the right of the circle
+			.attr('y2', (d) => yScale(salesDataByYear[d[0]]) - 55) // Offset the line above the circle
+			.attr('stroke', 'black')
+			.attr('stroke-width', 1);
+
+		// Add HTML elements for the annotations
+		annotations
+			.append('foreignObject')
+			.attr('x', (d) => xScale(d[0]) + 15) // Offset the HTML element to the right of the circle
+			.attr('y', (d) => yScale(salesDataByYear[d[0]]) - 25) // Offset the HTML element above the circle
+			.attr('width', 100)
+			.attr('height', 40)
+			.html((d) => `<div class="annotation-text">${d[1].join(',')} Released</div>`);
+	}
+
+	// Call the function to create annotations
+	createAnnotations();
 	// =================================================================
 
 	// Slider =================================================================

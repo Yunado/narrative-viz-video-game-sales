@@ -106,6 +106,14 @@ h1 {
 	background-color: lightseagreen;
 }
 
+.annotation-text {
+	font-size: 12px;
+	background-color: #f0f0f0;
+	border: 1px solid #ccc;
+	padding: 5px;
+	border-radius: 5px;
+}
+
 /* slider */
 [slider] {
 	width: 500px;
