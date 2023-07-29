@@ -95,7 +95,22 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	// Create an empty object to store the result
 	const platformsByYear = {};
-	const majorConsole = ['NES', 'SNES', 'PS', 'PS2', 'GBA', 'PSP', 'DS', 'X360', 'Wii', 'PS3', '3DS', 'PS4', 'XOne'];
+	const majorConsole = [
+		'NES',
+		'SNES',
+		'PS',
+		'XB',
+		'PS2',
+		'GBA',
+		'PSP',
+		'DS',
+		'X360',
+		'Wii',
+		'PS3',
+		'3DS',
+		'PS4',
+		'XOne',
+	];
 
 	// Loop through the firstYearByPlatform object
 	for (const platform in firstYearByPlatform) {
@@ -233,6 +248,16 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	// =================================================================
 
 	// Annotation =================================================================
+	let lineX2 = [0, 0, 0, 65, -45, 35, -15, 30, 60];
+	let lineY2 = [-100, -125, -150, 20, -55, 55, -80, -25, -55];
+	let tagX2 = [-40, -40, -40, 25, -75, -5, -80, 30, 20];
+	let tagY2 = [-100, -125, -175, 10, -75, 50, -100, -60, -70];
+	if (region === 'Japan') {
+		lineX2 = [0, -10, -40, -10, 65, -50, 55, 70, 80];
+		lineY2 = [-100, -125, -80, 50, 55, -45, 0, -55, 0];
+		tagX2 = [-40, -50, -80, -55, 25, -90, 30, 30, 40];
+		tagY2 = [-100, -125, -110, 50, 25, -75, -20, -60, -20];
+	}
 	// Function to create annotations
 	function createAnnotations() {
 		const annotations = chart
@@ -247,18 +272,18 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 			.append('line')
 			.attr('x1', (d) => xScale(d[0]))
 			.attr('y1', (d) => yScale(salesDataByYear[d[0]]))
-			.attr('x2', (d) => xScale(d[0]) + 5) // Offset the line to the right of the circle
-			.attr('y2', (d) => yScale(salesDataByYear[d[0]]) - 55) // Offset the line above the circle
+			.attr('x2', (d, i) => xScale(d[0]) + lineX2[i]) // Offset the line to the right of the circle
+			.attr('y2', (d, i) => yScale(salesDataByYear[d[0]]) + lineY2[i]) // Offset the line above the circle
 			.attr('stroke', 'black')
 			.attr('stroke-width', 1);
 
 		// Add HTML elements for the annotations
 		annotations
 			.append('foreignObject')
-			.attr('x', (d) => xScale(d[0]) + 15) // Offset the HTML element to the right of the circle
-			.attr('y', (d) => yScale(salesDataByYear[d[0]]) - 25) // Offset the HTML element above the circle
-			.attr('width', 100)
-			.attr('height', 40)
+			.attr('x', (d, i) => xScale(d[0]) + tagX2[i]) // Offset the HTML element to the right of the circle
+			.attr('y', (d, i) => yScale(salesDataByYear[d[0]]) + tagY2[i]) // Offset the HTML element above the circle
+			.attr('width', 80)
+			.attr('height', 50)
 			.html((d) => `<div class="annotation-text">${d[1].join(',')} Released</div>`);
 	}
 
