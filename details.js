@@ -353,6 +353,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	let isPlaying = false; // Variable to keep track of the play/pause state
 	let playInterval; // Variable to store the interval ID for the play loop
+	let year = 1980;
 
 	playButton.addEventListener('click', function () {
 		if (isPlaying) {
@@ -363,8 +364,10 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		} else {
 			// If not playing, start the play loop
 			isPlaying = true;
-			let year = 1980;
 			const endYear = 2022;
+			if (year == endYear) {
+				year = 1980;
+			}
 
 			function playLoop() {
 				// show each year's tooltip while playing
@@ -384,8 +387,14 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 						tooltipDiv.html(`Year: ${tooltipY}<br>Sales: ${currentData}M<br>Platform released: ${plats}`);
 					}
 
-					// Position the tooltip next to the current dot
-					tooltipDiv.style('left', `${x + 250}px`).style('top', `${y + 110}px`);
+					// Position the tooltip below the h1 element with id "pageTitle"
+					const pageTitleElement = document.getElementById('pageTitle');
+					const pageTitleRect = pageTitleElement.getBoundingClientRect();
+					console.log(pageTitleRect.left, pageTitleRect.bottom);
+					const pageX = pageTitleRect.left + 50;
+					const pageY = pageTitleRect.bottom + 40; // Add some padding between h1 element and tooltip
+
+					tooltipDiv.style('left', `${pageX + x}px`).style('top', `${pageY + y}px`);
 				}
 
 				if (year >= endYear) {
@@ -404,6 +413,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 				year++;
 				playInterval = setTimeout(playLoop, 500); // Delay the next iteration by 1 second
 			}
+
 			playButton.textContent = 'Pause'; // Change the button text to "Pause"
 			playLoop();
 		}
