@@ -133,29 +133,24 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	// Tool Tip ================================================================
 	const Tooltip = d3.select('#lineChart').append('div');
 
-	// Function to show the tooltip on mouseover
-	function mouseover(event, d) {
+	// Function to show the tooltip
+	function showTooltip(event, d) {
 		Tooltip.style('opacity', 1);
-	}
 
-	// Function to move the tooltip along with the mouse pointer
-	function mousemove(event, d) {
 		const tooltipDiv = d3.select('#my_dataviz');
-		tooltipDiv
-			.style('opacity', 1)
-			.html(`Year: ${d.year}<br>Sales: ${d.sales}M`)
-			.style('left', event.pageX + 'px')
-			.style('top', event.pageY - 10 + 'px');
+		tooltipDiv.style('opacity', 1).html(`Year: ${d.year}<br>Sales: ${d.sales}M`);
 
 		const plats = platformsByYear[d.year];
-		console.log(plats, d.year);
 		if (plats) {
-			tooltipDiv.html(`Year: ${d.year}<br>Sales: ${d.sales}M<br>Platform released on: ${plats}`);
+			tooltipDiv.html(`Year: ${d.year}<br>Sales: ${d.sales}M<br>Platform released: ${plats}`);
 		}
+
+		// Position the tooltip next to the mouse pointer
+		tooltipDiv.style('left', event.pageX + 'px').style('top', event.pageY - 10 + 'px');
 	}
 
-	// Function to hide the tooltip on mouseleave
-	function mouseleave(event, d) {
+	// Function to hide the tooltip
+	function hideTooltip() {
 		const tooltipDiv = d3.select('#my_dataviz');
 		tooltipDiv.style('opacity', 0);
 	}
@@ -214,9 +209,9 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		.attr('cy', (d) => yScale(d.sales))
 		.attr('r', 6)
 		.attr('fill', (d) => (d.year >= startYear && d.year < endYear ? 'lightcoral' : 'steelblue'))
-		.on('mouseover', mouseover)
-		.on('mousemove', mousemove)
-		.on('mouseleave', mouseleave);
+		.on('mouseover', showTooltip)
+		.on('mousemove', showTooltip)
+		.on('mouseleave', hideTooltip);
 
 	function updateDotColors() {
 		dots.attr('fill', (d) => (d.year >= startYear && d.year < endYear ? 'lightcoral' : 'steelblue'));
@@ -372,6 +367,27 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 			const endYear = 2022;
 
 			function playLoop() {
+				// show each year's tooltip while playing
+				const tooltipY = parseInt(startYearSlider.value) + 1;
+				if (tooltipY < 2021) {
+					const currentData = salesDataByYear[tooltipY];
+					const x = xScale(tooltipY);
+					const y = yScale(currentData);
+
+					// Update the tooltip's position
+					Tooltip.style('opacity', 1);
+					const tooltipDiv = d3.select('#my_dataviz');
+					tooltipDiv.style('opacity', 1).html(`Year: ${tooltipY}<br>Sales: ${currentData}M`);
+
+					const plats = platformsByYear[tooltipY];
+					if (plats) {
+						tooltipDiv.html(`Year: ${tooltipY}<br>Sales: ${currentData}M<br>Platform released: ${plats}`);
+					}
+
+					// Position the tooltip next to the current dot
+					tooltipDiv.style('left', `${x + 250}px`).style('top', `${y + 110}px`);
+				}
+
 				if (year >= endYear) {
 					// If the current year is greater than or equal to the end year, stop the play loop
 					isPlaying = false;
@@ -386,9 +402,8 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 				startYearSlider.dispatchEvent(new Event('input', { bubbles: true }));
 
 				year++;
-				playInterval = setTimeout(playLoop, 300); // Delay the next iteration by 1 second
+				playInterval = setTimeout(playLoop, 500); // Delay the next iteration by 1 second
 			}
-
 			playButton.textContent = 'Pause'; // Change the button text to "Pause"
 			playLoop();
 		}
