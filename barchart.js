@@ -15,7 +15,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	// Update the <h1> element with the region name
 	const pageTitle = document.getElementById('pageTitle');
-	pageTitle.textContent = `${decodeURIComponent(region)} Bar`;
+	pageTitle.textContent = `${decodeURIComponent(region)} Top 10 Games`;
 	//================================================================
 
 	// GAME DATA ================================================================
@@ -41,7 +41,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		console.log('End Year:', endYear);
 		// Query sales data for the range [startYear, endYear)
 
-		document.getElementById('sliderNote').textContent = `Sales From [${startYear}, ${endYear})`;
+		document.getElementById('sliderNote').textContent = `Sales From [${startYear},${endYear})`;
 	}
 
 	// Function to map the region name to the corresponding sales column
@@ -61,23 +61,6 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		}
 	}
 
-	// Create an empty object to store the first year of game releases for each platform
-	const firstYearByPlatform = {};
-
-	// Loop through the filtered CSV data to find the first year of game releases for each platform
-	filteredCSVData.forEach((game) => {
-		const platform = game.Platform;
-		const year = +game.Year;
-
-		// If the platform is not yet recorded in the firstYearByPlatform object or if the current year is earlier than the recorded year for that platform, update the first year
-		if (!firstYearByPlatform[platform] || year < firstYearByPlatform[platform]) {
-			firstYearByPlatform[platform] = year;
-		}
-	});
-
-	// Output the result
-	console.log(firstYearByPlatform);
-
 	// Function to filter data by region and year range and get the rows with highest sales rank
 	function getMostSoldGamesByYearRange(region, startYear, endYear, data) {
 		const salesColumn = getSalesColumn(region);
@@ -95,7 +78,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		// Map the sales data to a new property called "sales"
 		const topRankedGames = filteredData.slice(0, 10).map((d) => ({
 			...d, // Copy all properties from the original object
-			Sales: parseFloat(d[salesColumn]), // Map the sales data to the "sales" property
+			Sales: parseFloat(d[salesColumn]).toFixed(2), // Map the sales data to the "sales" property
 		}));
 
 		return topRankedGames;
@@ -106,9 +89,57 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	// Output the top-ranked games to the console
 	console.log('Top Ranked Games:', topRankedGames);
+
+	// Function to filter data by region and year range and get the rows with highest sales rank for publishers
+	function getMostSoldPublishersByYearRange(region, startYear, endYear, data) {
+		const salesColumn = getSalesColumn(region);
+		if (!salesColumn) {
+			// If the region doesn't match any of the predefined regions, return an empty array
+			return [];
+		}
+
+		// Filter data by region and year range
+		const filteredData = data.filter((d) => d.Year >= startYear && d.Year < endYear);
+
+		// Create an object to store total sales for each publisher
+		const publisherSales = {};
+
+		// Calculate total sales for each publisher within the year range
+		filteredData.forEach((game) => {
+			const publisher = game.Publisher;
+			const sales = parseFloat(game[salesColumn]);
+
+			// If the publisher is not yet recorded in the publisherSales object, initialize it with the sales value
+			if (!publisherSales[publisher]) {
+				publisherSales[publisher] = sales;
+			} else {
+				// If the publisher is already recorded, add the sales value to the existing total
+				publisherSales[publisher] += sales;
+			}
+		});
+
+		// Convert the publisherSales object to an array of objects
+		const publisherSalesArray = Object.entries(publisherSales).map(([publisher, sales]) => ({
+			Name: publisher,
+			Sales: sales.toFixed(2),
+		}));
+
+		// Sort the publisherSalesArray by total sales in descending order
+		publisherSalesArray.sort((a, b) => b.Sales - a.Sales);
+
+		// Return the top 10 publishers by total sales
+		return publisherSalesArray.slice(0, 10);
+	}
+
+	// Get the rows of the most game sold publishers in the start and end years for the specified region
+	let topRankedPublishers = getMostSoldPublishersByYearRange(region, startYear, endYear, filteredCSVData);
+
+	// Output the top-ranked publishers to the console
+	console.log('Top Ranked Publishers:', topRankedPublishers);
 	// =================================================================
 
 	// Tool Tip ================================================================
+	let currentDataSet = 'games';
 	const Tooltip = d3.select('#BarChart').append('div');
 
 	// Function to show the tooltip
@@ -119,9 +150,12 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		tooltipDiv
 			.style('opacity', 1)
 			.html(
-				`Year: ${d.Year}<br>Name: ${d.Name}<br>Platform: ${d.Platform}<br>Publisher: ${d.Publisher}<br>Sales: ${d.Sales}M`
+				`Year: ${d.Year}<br>Name: ${d.Name}<br>Genre: ${d.Genre}<br>Platform: ${d.Platform}<br>Publisher: ${d.Publisher}<br>Sales: ${d.Sales}M`
 			);
 
+		if (currentDataSet === 'publishers') {
+			tooltipDiv.style('opacity', 1).html(`Publisher: ${d.Name}<br>Total Sales: ${d.Sales}M`);
+		}
 		// Position the tooltip next to the mouse pointer
 		tooltipDiv.style('left', event.pageX + 'px').style('top', event.pageY - 10 + 'px');
 	}
@@ -144,8 +178,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	// Create the chart group
 	const chart = BarSvg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-	// Define a color scale for the platforms
-	const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+	let topRankedData = topRankedGames;
 
 	// Function to update the bar chart based on the top ranked games
 	function updateBarChart() {
@@ -156,21 +189,21 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		// Create scales for the x and y axes
 		const xScale = d3
 			.scaleBand()
-			.domain(topRankedGames.map((d) => d.Name))
+			.domain(topRankedData.map((d) => d.Name))
 			.range([0, chartWidth])
 			.paddingInner(0.1)
 			.paddingOuter(0.2);
 
 		const yScale = d3
 			.scaleLinear()
-			.domain([0, d3.max(topRankedGames, (d) => +d.Sales)])
+			.domain([0, d3.max(topRankedData, (d) => +d.Sales)])
 			.range([chartHeight, 0]);
 
 		// Draw the x-axis
 		const xAxis = d3
 			.axisBottom(xScale)
-			.tickFormat((d) => d) // Format the tick labels as needed
-			.tickSize(0); // Hide the tick lines
+			.tickFormat((d) => d)
+			.tickSize(0);
 
 		chart
 			.append('g')
@@ -203,7 +236,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 			.text('Sales (M)');
 
 		// Update the bars
-		const bars = chart.selectAll('.bar').data(topRankedGames, (d) => d.Name);
+		const bars = chart.selectAll('.bar').data(topRankedData, (d) => d.Name);
 
 		// Exit
 		bars.exit().remove();
@@ -229,8 +262,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 			.attr('x', (d) => xScale(d.Name))
 			.attr('width', xScale.bandwidth())
 			.attr('y', (d) => yScale(d.Sales))
-			.attr('height', (d) => chartHeight - yScale(d.Sales))
-			.attr('fill', (d) => colorScale(d.Platform));
+			.attr('height', (d) => chartHeight - yScale(d.Sales));
 	}
 
 	// Call the function to initially create the bar chart
@@ -251,6 +283,20 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	updateYearRange();
 
+	// Function to update the bar chart when the slider handles are dragged
+	function updateBarChartOnSliderChange() {
+		updateYearRange();
+		topRankedGames = getMostSoldGamesByYearRange(region, startYear, endYear, filteredCSVData);
+		topRankedPublishers = getMostSoldPublishersByYearRange(region, startYear, endYear, filteredCSVData);
+
+		// Update the topRankedData variable based on the current data set
+		topRankedData = currentDataSet === 'games' ? topRankedGames : topRankedPublishers;
+
+		// Call the updateBarChart() function with the updated data
+		updateBarChart();
+		console.log('Top Ranked Games:', topRankedGames);
+	}
+
 	// Function for the left slider handle
 	startYearSlider.addEventListener('input', function year1() {
 		this.value = Math.min(this.value, this.parentNode.childNodes[5].value - 1);
@@ -262,11 +308,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		children[11].style.left = value + '%';
 		children[11].childNodes[1].innerHTML = this.value;
 		startYear = parseInt(this.value);
-		updateYearRange();
-		topRankedGames = getMostSoldGamesByYearRange(region, startYear, endYear, filteredCSVData);
-		updateBarChart();
-		// updateDotColors();
-		console.log('Top Ranked Games:', topRankedGames);
+		updateBarChartOnSliderChange();
 	});
 
 	// Function for the right slider handle
@@ -280,11 +322,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		children[13].style.left = value + '%';
 		children[13].childNodes[1].innerHTML = this.value;
 		endYear = parseInt(this.value);
-		updateYearRange();
-		topRankedGames = getMostSoldGamesByYearRange(region, startYear, endYear, filteredCSVData);
-		updateBarChart();
-		// updateDotColors();
-		console.log('Top Ranked Games:', topRankedGames);
+		updateBarChartOnSliderChange();
 	});
 
 	// Function to update the slider handles with the query parameter values
@@ -300,7 +338,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	// Call the function to update the slider handles when the page loads
 	updateSliderHandles();
 
-	// Back to World Map button
+	// Back to line chart button
 	const backButton = document.getElementById('backButton');
 	backButton.addEventListener('click', function () {
 		const queryString = `?region=${encodeURIComponent(region)}&startYear=${startYear}&endYear=${endYear}`;
@@ -308,73 +346,36 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	});
 
 	const playButton = document.getElementById('playButton');
+	playButton.textContent = 'Top 10 Publishers';
 
-	let isPlaying = false; // Variable to keep track of the play/pause state
-	let playInterval; // Variable to store the interval ID for the play loop
-	let year = 1980;
-
-	playButton.addEventListener('click', function () {
-		if (isPlaying) {
-			// If playing, pause the play loop
-			isPlaying = false;
-			clearInterval(playInterval); // Stop the play loop
-			playButton.textContent = 'Play'; // Change the button text to "Play"
+	// Function to switch between data sets
+	function switchDataSets() {
+		if (currentDataSet === 'games') {
+			currentDataSet = 'publishers';
+			const pageTitle = document.getElementById('pageTitle');
+			pageTitle.textContent = `${decodeURIComponent(region)} Top 10 Publishers`;
+			playButton.textContent = 'Top 10 Games';
 		} else {
-			// If not playing, start the play loop
-			isPlaying = true;
-			const endYear = 2022;
-			if (year == endYear) {
-				year = 1980;
-			}
-
-			function playLoop() {
-				// show each year's tooltip while playing
-				// const tooltipY = parseInt(startYearSlider.value) + 1;
-				// if (tooltipY < 2021) {
-				// 	const currentData = salesDataByYear[tooltipY];
-				// 	const x = xScale(tooltipY);
-				// 	const y = yScale(currentData);
-
-				// 	// Update the tooltip's position
-				// 	Tooltip.style('opacity', 1);
-				// 	const tooltipDiv = d3.select('#my_dataviz');
-				// 	tooltipDiv.style('opacity', 1).html(`Year: ${tooltipY}<br>Sales: ${currentData}M`);
-
-				// 	const plats = platformsByYear[tooltipY];
-				// 	if (plats) {
-				// 		tooltipDiv.html(`Year: ${tooltipY}<br>Sales: ${currentData}M<br>Platform released: ${plats}`);
-				// 	}
-
-				// 	// Position the tooltip below the h1 element with id "pageTitle"
-				// 	const pageTitleElement = document.getElementById('pageTitle');
-				// 	const pageTitleRect = pageTitleElement.getBoundingClientRect();
-				// 	console.log(pageTitleRect.left, pageTitleRect.bottom);
-				// 	const pageX = pageTitleRect.left + 50;
-				// 	const pageY = pageTitleRect.bottom + 40; // Add some padding between h1 element and tooltip
-
-				// 	tooltipDiv.style('left', `${pageX + x}px`).style('top', `${pageY + y}px`);
-				// }
-
-				if (year >= endYear) {
-					// If the current year is greater than or equal to the end year, stop the play loop
-					isPlaying = false;
-					playButton.textContent = 'Play'; // Change the button text to "Play"
-					return;
-				}
-				// Update the left handle and right handle, then trigger the "input" event for both
-				endYearSlider.value = year;
-				endYearSlider.dispatchEvent(new Event('input', { bubbles: true }));
-
-				startYearSlider.value = year;
-				startYearSlider.dispatchEvent(new Event('input', { bubbles: true }));
-
-				year++;
-				playInterval = setTimeout(playLoop, 500); // Delay the next iteration by 1 second
-			}
-
-			playButton.textContent = 'Pause'; // Change the button text to "Pause"
-			playLoop();
+			currentDataSet = 'games';
+			const pageTitle = document.getElementById('pageTitle');
+			pageTitle.textContent = `${decodeURIComponent(region)} Top 10 Games`;
+			playButton.textContent = 'Top 10 Games';
 		}
+	}
+
+	// Update the event listener for the play button
+	playButton.addEventListener('click', function () {
+		// Switch between data sets
+		switchDataSets();
+
+		// Get the current data set based on the currentDataSet variable
+		const currentData = currentDataSet === 'games' ? topRankedGames : topRankedPublishers;
+
+		// Use the current data set for the bar chart
+		topRankedData = currentData;
+
+		// Update the bar chart
+		updateBarChart();
 	});
 	// =================================================================
 });

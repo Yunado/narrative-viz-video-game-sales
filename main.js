@@ -113,7 +113,7 @@ Promise.all([
 		markers[4].sales = totalGlobalSales;
 		console.log(markers);
 
-		document.getElementById('sliderNote').textContent = `Sales From [${startYear}, ${endYear})`;
+		document.getElementById('sliderNote').textContent = `Sales From [${startYear},${endYear})`;
 	}
 	// =================================================================
 

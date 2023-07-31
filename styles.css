@@ -49,6 +49,18 @@ h1 {
 	transition: 0.3s;
 }
 
+.bar {
+	fill: lightblue;
+	stroke: steelblue;
+	stroke-width: 2px;
+}
+
+.bar:hover {
+	cursor: pointer;
+	fill: lightcoral;
+	transition: 0.3s;
+}
+
 #my_dataviz {
 	position: absolute;
 	top: 0;

@@ -39,7 +39,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		console.log('End Year:', endYear);
 		// Query sales data for the range [startYear, endYear)
 
-		document.getElementById('sliderNote').textContent = `Sales From [${startYear}, ${endYear})`;
+		document.getElementById('sliderNote').textContent = `Sales From [${startYear},${endYear})`;
 	}
 
 	// Function to map the region name to the corresponding sales column
