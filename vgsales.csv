@@ -29,7 +29,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 28,Brain Age 2: More Training in Minutes a Day,DS,2005,Puzzle,Nintendo,3.44,5.36,5.32,1.18,15.3
 29,Gran Turismo 3: A-Spec,PS2,2001,Racing,Sony Computer Entertainment,6.85,5.09,1.87,1.16,14.98
 30,Call of Duty: Modern Warfare 3,X360,2011,Shooter,Activision,9.03,4.28,0.13,1.32,14.76
-31,Pok??mon Yellow: Special Pikachu Edition,GB,1998,Role-Playing,Nintendo,5.89,5.04,3.12,0.59,14.64
+31,Pokemon Yellow: Special Pikachu Edition,GB,1998,Role-Playing,Nintendo,5.89,5.04,3.12,0.59,14.64
 32,Call of Duty: Black Ops,X360,2010,Shooter,Activision,9.67,3.73,0.11,1.13,14.64
 33,Pokemon X/Pokemon Y,3DS,2013,Role-Playing,Nintendo,5.17,4.05,4.34,0.79,14.35
 34,Call of Duty: Black Ops 3,PS4,2015,Shooter,Activision,5.77,5.81,0.35,2.31,14.24
@@ -87,7 +87,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 86,Mario & Sonic at the Olympic Games,Wii,2007,Sports,Sega,2.58,3.9,0.66,0.91,8.06
 87,Final Fantasy X,PS2,2001,Role-Playing,Sony Computer Entertainment,2.91,2.07,2.73,0.33,8.05
 88,Final Fantasy VIII,PS,1999,Role-Playing,SquareSoft,2.28,1.72,3.63,0.23,7.86
-89,Pok??mon Platinum Version,DS,2008,Role-Playing,Nintendo,2.82,1.78,2.69,0.55,7.84
+89,Pokemon Platinum Version,DS,2008,Role-Playing,Nintendo,2.82,1.78,2.69,0.55,7.84
 90,Pac-Man,2600,1982,Puzzle,Atari,7.28,0.45,0,0.08,7.81
 91,Grand Theft Auto: Liberty City Stories,PSP,2005,Action,Take-Two Interactive,2.9,2.83,0.24,1.75,7.72
 92,Super Mario Galaxy 2,Wii,2010,Platform,Nintendo,3.66,2.42,0.98,0.64,7.69
@@ -129,9 +129,9 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 128,The Legend of Zelda,NES,1986,Action,Nintendo,3.74,0.93,1.69,0.14,6.51
 129,Assassin's Creed III,PS3,2012,Action,Ubisoft,2.64,2.56,0.16,1.14,6.5
 130,Halo: Combat Evolved,XB,2001,Shooter,Microsoft Game Studios,4.98,1.3,0.08,0.07,6.43
-131,Pok??mon Emerald Version,GBA,2004,Role-Playing,Nintendo,2.57,1.58,2.06,0.21,6.41
+131,Pokemon Emerald Version,GBA,2004,Role-Playing,Nintendo,2.57,1.58,2.06,0.21,6.41
 132,Kingdom Hearts,PS2,2002,Role-Playing,Sony Computer Entertainment,3.64,1.2,1.49,0.07,6.4
-133,Pok??mon Crystal Version,GB,2000,Role-Playing,Nintendo,2.55,1.56,1.29,0.99,6.39
+133,Pokemon Crystal Version,GB,2000,Role-Playing,Nintendo,2.55,1.56,1.29,0.99,6.39
 134,Halo 3: ODST,X360,2009,Shooter,Microsoft Game Studios,4.34,1.35,0.06,0.61,6.36
 135,Red Dead Redemption,X360,2010,Action,Take-Two Interactive,3.7,1.97,0.09,0.57,6.34
 136,Super Mario Sunshine,GC,2002,Platform,Nintendo,4.01,1.26,0.87,0.17,6.31
@@ -334,7 +334,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 333,Resident Evil 3: Nemesis,PS,1999,Action,Eidos Interactive,1.3,0.77,1.54,0.11,3.72
 334,Spyro: Year of the Dragon,PS,2000,Platform,Sony Computer Entertainment,1.93,1.58,0,0.19,3.71
 335,FIFA Soccer 2005,PS2,2004,Sports,Electronic Arts,0.58,2.48,0.04,0.59,3.7
-336,Pok??mon Trading Card Game,GB,1998,Strategy,Nintendo,1.49,0.73,1.38,0.1,3.7
+336,Pokemon Trading Card Game,GB,1998,Strategy,Nintendo,1.49,0.73,1.38,0.1,3.7
 337,Battlefield 4,PS3,2013,Shooter,Electronic Arts,1.3,1.51,0.27,0.61,3.69
 338,MySims,DS,2007,Simulation,Electronic Arts,1.59,1.61,0.08,0.41,3.69
 339,Friend Collection,DS,2009,Misc,Nintendo,0,0,3.67,0,3.67
@@ -546,7 +546,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 545,Missile Command,2600,1980,Shooter,Atari,2.56,0.17,0,0.03,2.76
 546,Mario Paint,SNES,1992,Misc,Nintendo,1.43,0.54,0.71,0.07,2.75
 547,Assassin's Creed IV: Black Flag,PS4,2013,Action,Ubisoft,1.07,1.31,0.06,0.31,2.74
-548,Pok??mon Stadium 2,N64,2000,Strategy,Nintendo,1.02,0.36,1.13,0.23,2.73
+548,Pokemon Stadium 2,N64,2000,Strategy,Nintendo,1.02,0.36,1.13,0.23,2.73
 549,Metroid,NES,1986,Action,Nintendo,1.33,0.31,1.04,0.05,2.73
 550,L.A. Noire,X360,2011,Adventure,Take-Two Interactive,1.52,0.94,0.02,0.24,2.72
 551,Call of Duty 3,X360,2006,Shooter,Activision,1.49,0.93,0.02,0.27,2.71
@@ -603,7 +603,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 602,Sonic Adventure 2 Battle,GC,2001,Platform,Sega,1.7,0.59,0.21,0.07,2.56
 603,Dragon Warrior II,NES,1987,Role-Playing,Enix Corporation,0.15,0,2.41,0,2.56
 604,Madden NFL 13,PS3,2012,Sports,Electronic Arts,2.11,0.23,0,0.22,2.56
-605,Pok??mon Colosseum,GC,2003,Role-Playing,Nintendo,1.21,0.57,0.7,0.07,2.54
+605,Pokemon Colosseum,GC,2003,Role-Playing,Nintendo,1.21,0.57,0.7,0.07,2.54
 606,Deca Sports,Wii,2008,Sports,Konami Digital Entertainment,1.13,0.87,0.29,0.25,2.54
 607,Madden NFL 09,X360,2008,Sports,Electronic Arts,2.21,0.12,0,0.2,2.54
 608,Space Invaders,2600,N/A,Shooter,Atari,2.36,0.14,0,0.03,2.53
@@ -823,7 +823,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 823,Need for Speed: ProStreet,PS3,2007,Racing,Electronic Arts,0.73,0.92,0.04,0.37,2.05
 824,Carnival Games,DS,2008,Misc,Take-Two Interactive,1.23,0.64,0,0.19,2.05
 825,NBA 2K14,PS3,2013,Sports,Take-Two Interactive,1.43,0.33,0.04,0.25,2.05
-826,Pok??mon Mystery Dungeon: Blue Rescue Team,DS,2005,Role-Playing,Nintendo,1.16,0.06,0.83,0,2.05
+826,Pokemon Mystery Dungeon: Blue Rescue Team,DS,2005,Role-Playing,Nintendo,1.16,0.06,0.83,0,2.05
 827,Sonic Mega Collection,GC,2002,Misc,Infogrames,1.47,0.48,0.05,0.06,2.05
 828,Diablo III,PS3,2013,Role-Playing,Activision,0.71,0.83,0.15,0.35,2.05
 829,NBA Jam,GEN,1992,Sports,Arena Entertainment,1.75,0.25,0,0.05,2.05
@@ -1813,7 +1813,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 1813,WWE 2K14,X360,2013,Sports,Take-Two Interactive,0.64,0.39,0,0.1,1.13
 1814,Alien: Isolation,PS4,2014,Shooter,Sega,0.34,0.56,0.04,0.19,1.13
 1815,Yakuza 3,PS3,2009,Action,Sega,0.21,0.21,0.62,0.08,1.13
-1816,Pok??mon Mystery Dungeon: Red Rescue Team (US weekly sales),GBA,2005,Role-Playing,Nintendo,0.81,0.3,0,0.02,1.13
+1816,Pokemon Mystery Dungeon: Red Rescue Team (US weekly sales),GBA,2005,Role-Playing,Nintendo,0.81,0.3,0,0.02,1.13
 1817,The Beatles: Rock Band,PS3,2009,Misc,MTV Games,0.67,0.3,0,0.15,1.13
 1818,Dragon Age II,X360,2011,Action,Electronic Arts,0.72,0.3,0.01,0.09,1.12
 1819,Moon Patrol,2600,1982,Shooter,Atari,1.05,0.06,0,0.01,1.12
@@ -8076,7 +8076,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 8076,Dungeon Travelers 2: The Royal Library & The Monster Seal,PSV,2014,Role-Playing,Atlus,0.07,0.03,0.05,0.03,0.18
 8077,Dying Light,PC,2015,Action,Warner Bros. Interactive Entertainment,0.11,0.06,0,0.02,0.18
 8078,Vampire Savior: The Lord of Vampire,SAT,1998,Fighting,Capcom,0,0,0.18,0,0.18
-8079,Pok??mon I Choose You / Squirtle Squad Game Boy Advance Video,GBA,2004,Misc,Nintendo,0.13,0.05,0,0,0.18
+8079,Pokemon I Choose You / Squirtle Squad Game Boy Advance Video,GBA,2004,Misc,Nintendo,0.13,0.05,0,0,0.18
 8080,Super Robot Taisen UX,3DS,2013,Role-Playing,Namco Bandai Games,0,0,0.18,0,0.18
 8081,Six Flags Fun Park,DS,2008,Misc,Brash Entertainment,0.17,0,0,0.01,0.18
 8082,Test Drive Off-Road Wide Open,XB,2001,Racing,Infogrames,0.15,0.03,0,0.01,0.18
@@ -8342,7 +8342,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 8342,Spawn: Armageddon,XB,2003,Action,Electronic Arts,0.13,0.04,0,0.01,0.17
 8343,Codename: Kids Next Door: Game Boy Advance Video Volume 1,GBA,2004,Misc,N/A,0.12,0.05,0,0,0.17
 8344,Zoo Hospital,Wii,2008,Simulation,Majesco Entertainment,0.14,0.01,0,0.01,0.17
-8345,Pok??mon Beach Blank-out Blastoise / Go West Young Meowth Game Boy Advance Video,GBA,2004,Misc,Nintendo,0.12,0.05,0,0,0.17
+8345,Pokemon Beach Blank-out Blastoise / Go West Young Meowth Game Boy Advance Video,GBA,2004,Misc,Nintendo,0.12,0.05,0,0,0.17
 8346,Time and Eternity,PS3,2012,Role-Playing,Nippon Ichi Software,0.06,0.03,0.06,0.02,0.17
 8347,Major League Baseball 2K9,PS2,2009,Sports,Spike,0.08,0.06,0,0.02,0.17
 8348,Gundam Assault Survive,PSP,2010,Action,Namco Bandai Games,0,0,0.17,0,0.17
@@ -8847,7 +8847,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 8847,Castlevania: Lords of Shadow - Mirror of Fate,3DS,2013,Action,Konami Digital Entertainment,0.04,0.07,0.03,0.01,0.15
 8848,3rd Super Robot Wars Z: Tengoku-Hen,PS3,2015,Action,Namco Bandai Games,0,0,0.15,0,0.15
 8849,Fantasia: Music Evolved,XOne,2014,Misc,Disney Interactive Studios,0.11,0.03,0,0.01,0.15
-8850,Pok??mon: Johto Photo Finish: Game Boy Advance Video,GBA,2004,Misc,N/A,0.11,0.04,0,0,0.15
+8850,Pokemon: Johto Photo Finish: Game Boy Advance Video,GBA,2004,Misc,N/A,0.11,0.04,0,0,0.15
 8851,F1 2001,PS2,2001,Racing,Electronic Arts,0.07,0.06,0,0.02,0.15
 8852,The Legend of Heroes: Trails of Cold Steel II,PSV,2014,Role-Playing,Nippon Ichi Software,0.02,0,0.13,0.01,0.15
 8853,Top Gun: Combat Zones,GC,2002,Simulation,Titus,0.12,0.03,0,0,0.15
@@ -9566,7 +9566,7 @@ Rank,Name,Platform,Year,Genre,Publisher,NA_Sales,EU_Sales,JP_Sales,Other_Sales,G
 9566,Shining Wind,PS2,2007,Role-Playing,Sega,0,0,0.13,0,0.13
 9567,Brothers in Arms: Double Time,Wii,2008,Shooter,Ubisoft,0.11,0,0,0.01,0.13
 9568,Portal Runner,PS2,2001,Platform,3DO,0.06,0.05,0,0.02,0.13
-9569,Pok??mon: For Ho-Oh the Bells Toll!: Game Boy Advance Video,GBA,2004,Misc,Nintendo,0.09,0.03,0,0,0.13
+9569,Pokemon: For Ho-Oh the Bells Toll!: Game Boy Advance Video,GBA,2004,Misc,Nintendo,0.09,0.03,0,0,0.13
 9570,Pro Evolution Soccer 2016,X360,2015,Sports,Konami Digital Entertainment,0.04,0.08,0,0.01,0.13
 9571,Batman: Arkham Knight,PC,2015,Action,Warner Bros. Interactive Entertainment,0.08,0.03,0,0.01,0.13
 9572,Warriors Orochi 2,PS2,2008,Action,Tecmo Koei,0.06,0.05,0,0.02,0.13

@@ -198,6 +198,12 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	let startYear = parseInt(urlParams.get('startYear'));
 	let endYear = parseInt(urlParams.get('endYear'));
 
+	// Function to redirect to the new HTML page with URL parameters
+	function redirectToBarChart(region, startYear, endYear) {
+		const queryString = `?region=${encodeURIComponent(region)}&startYear=${startYear}&endYear=${endYear}`;
+		window.location.href = `barchart.html${queryString}`;
+	}
+
 	// Draw the scatter plot points
 	const dots = chart
 		.selectAll('circle')
@@ -211,7 +217,11 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		.attr('fill', (d) => (d.year >= startYear && d.year < endYear ? 'lightcoral' : 'steelblue'))
 		.on('mouseover', showTooltip)
 		.on('mousemove', showTooltip)
-		.on('mouseleave', hideTooltip);
+		.on('mouseleave', hideTooltip)
+		.on('click', function (event, d) {
+			// On dot click, redirect to the new page with region, startYear, and endYear as URL parameters
+			redirectToBarChart(region, startYear, endYear);
+		});
 
 	function updateDotColors() {
 		dots.attr('fill', (d) => (d.year >= startYear && d.year < endYear ? 'lightcoral' : 'steelblue'));
