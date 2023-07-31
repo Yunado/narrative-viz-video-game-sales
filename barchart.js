@@ -21,26 +21,10 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	// GAME DATA ================================================================
 	// Filter rows containing "N/A" from CSV data
 	const filteredCSVData = csvData.filter(function (d) {
-		// Customize this condition to match the columns containing "N/A"
 		return !Object.values(d).some((value) => value === 'N/A');
 	});
 
-	// Extract the years from the filtered CSV data
-	const years = filteredCSVData.map((d) => +d.Year);
-
-	// Find the minimum and maximum years
-	const minYear = Math.min(...years);
-	const maxYear = Math.max(...years);
-
-	// Output the result
-	console.log('Min Year:', minYear);
-	console.log('Max Year:', maxYear);
-
 	function updateYearRange() {
-		console.log('Start Year:', startYear);
-		console.log('End Year:', endYear);
-		// Query sales data for the range [startYear, endYear)
-
 		document.getElementById('sliderNote').textContent = `Sales From [${startYear},${endYear})`;
 	}
 
@@ -57,7 +41,7 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		} else if (region === 'Worldwide') {
 			return 'Global_Sales';
 		} else {
-			return null; // If the region doesn't match any of the above, return null
+			return null;
 		}
 	}
 
@@ -65,77 +49,58 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	function getMostSoldGamesByYearRange(region, startYear, endYear, data) {
 		const salesColumn = getSalesColumn(region);
 		if (!salesColumn) {
-			// If the region doesn't match any of the predefined regions, return an empty array
 			return [];
 		}
 
-		// Filter data by region and year range
 		const filteredData = data.filter((d) => d.Year >= startYear && d.Year < endYear);
 
 		// Sort the filtered data by sales in descending order
 		filteredData.sort((a, b) => b[salesColumn] - a[salesColumn]);
 
-		// Map the sales data to a new property called "sales"
 		const topRankedGames = filteredData.slice(0, 10).map((d) => ({
-			...d, // Copy all properties from the original object
-			Sales: parseFloat(d[salesColumn]).toFixed(2), // Map the sales data to the "sales" property
+			...d,
+			Sales: parseFloat(d[salesColumn]).toFixed(2),
 		}));
 
 		return topRankedGames;
 	}
 
-	// Get the rows of the most sold games in the start and end years for the specified region
 	let topRankedGames = getMostSoldGamesByYearRange(region, startYear, endYear, filteredCSVData);
-
-	// Output the top-ranked games to the console
-	console.log('Top Ranked Games:', topRankedGames);
 
 	// Function to filter data by region and year range and get the rows with highest sales rank for publishers
 	function getMostSoldPublishersByYearRange(region, startYear, endYear, data) {
 		const salesColumn = getSalesColumn(region);
 		if (!salesColumn) {
-			// If the region doesn't match any of the predefined regions, return an empty array
 			return [];
 		}
 
-		// Filter data by region and year range
 		const filteredData = data.filter((d) => d.Year >= startYear && d.Year < endYear);
 
 		// Create an object to store total sales for each publisher
 		const publisherSales = {};
 
-		// Calculate total sales for each publisher within the year range
 		filteredData.forEach((game) => {
 			const publisher = game.Publisher;
 			const sales = parseFloat(game[salesColumn]);
 
-			// If the publisher is not yet recorded in the publisherSales object, initialize it with the sales value
 			if (!publisherSales[publisher]) {
 				publisherSales[publisher] = sales;
 			} else {
-				// If the publisher is already recorded, add the sales value to the existing total
 				publisherSales[publisher] += sales;
 			}
 		});
 
-		// Convert the publisherSales object to an array of objects
 		const publisherSalesArray = Object.entries(publisherSales).map(([publisher, sales]) => ({
 			Name: publisher,
 			Sales: sales.toFixed(2),
 		}));
 
-		// Sort the publisherSalesArray by total sales in descending order
 		publisherSalesArray.sort((a, b) => b.Sales - a.Sales);
 
-		// Return the top 10 publishers by total sales
 		return publisherSalesArray.slice(0, 10);
 	}
 
-	// Get the rows of the most game sold publishers in the start and end years for the specified region
 	let topRankedPublishers = getMostSoldPublishersByYearRange(region, startYear, endYear, filteredCSVData);
-
-	// Output the top-ranked publishers to the console
-	console.log('Top Ranked Publishers:', topRankedPublishers);
 	// =================================================================
 
 	// Tool Tip ================================================================
@@ -238,17 +203,15 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		// Update the bars
 		const bars = chart.selectAll('.bar').data(topRankedData, (d) => d.Name);
 
-		// Exit
 		bars.exit().remove();
 
-		// Enter
 		bars.enter()
 			.append('rect')
 			.attr('class', 'bar')
 			.attr('x', (d) => xScale(d.Name))
 			.attr('width', xScale.bandwidth())
-			.attr('y', chartHeight) // Set initial height to 0
-			.attr('height', 0) // Set initial height to 0
+			.attr('y', chartHeight)
+			.attr('height', 0)
 			.on('mouseover', showTooltip)
 			.on('mouseout', hideTooltip)
 			.transition()
@@ -256,7 +219,6 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 			.attr('y', (d) => yScale(d.Sales))
 			.attr('height', (d) => chartHeight - yScale(d.Sales));
 
-		// Update
 		bars.transition()
 			.duration(500)
 			.attr('x', (d) => xScale(d.Name))
@@ -279,8 +241,6 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	startYearSlider.value = defaultStartYear;
 	endYearSlider.value = defaultEndYear;
 
-	console.log(startYear, endYear);
-
 	updateYearRange();
 
 	// Function to update the bar chart when the slider handles are dragged
@@ -288,13 +248,8 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		updateYearRange();
 		topRankedGames = getMostSoldGamesByYearRange(region, startYear, endYear, filteredCSVData);
 		topRankedPublishers = getMostSoldPublishersByYearRange(region, startYear, endYear, filteredCSVData);
-
-		// Update the topRankedData variable based on the current data set
 		topRankedData = currentDataSet === 'games' ? topRankedGames : topRankedPublishers;
-
-		// Call the updateBarChart() function with the updated data
 		updateBarChart();
-		console.log('Top Ranked Games:', topRankedGames);
 	}
 
 	// Function for the left slider handle
@@ -363,18 +318,10 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		}
 	}
 
-	// Update the event listener for the play button
 	playButton.addEventListener('click', function () {
-		// Switch between data sets
 		switchDataSets();
-
-		// Get the current data set based on the currentDataSet variable
 		const currentData = currentDataSet === 'games' ? topRankedGames : topRankedPublishers;
-
-		// Use the current data set for the bar chart
 		topRankedData = currentData;
-
-		// Update the bar chart
 		updateBarChart();
 	});
 	// =================================================================

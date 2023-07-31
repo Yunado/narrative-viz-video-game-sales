@@ -19,26 +19,10 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	// GAME DATA ================================================================
 	// Filter rows containing "N/A" from CSV data
 	const filteredCSVData = csvData.filter(function (d) {
-		// Customize this condition to match the columns containing "N/A"
 		return !Object.values(d).some((value) => value === 'N/A');
 	});
 
-	// Extract the years from the filtered CSV data
-	const years = filteredCSVData.map((d) => +d.Year);
-
-	// Find the minimum and maximum years
-	const minYear = Math.min(...years);
-	const maxYear = Math.max(...years);
-
-	// Output the result
-	console.log('Min Year:', minYear);
-	console.log('Max Year:', maxYear);
-
 	function updateYearRange() {
-		console.log('Start Year:', startYear);
-		console.log('End Year:', endYear);
-		// Query sales data for the range [startYear, endYear)
-
 		document.getElementById('sliderNote').textContent = `Sales From [${startYear},${endYear})`;
 	}
 
@@ -62,36 +46,25 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	// Create an empty sales data object to store the sales for each year
 	const salesDataByYear = {};
 
-	// Loop through the years from 1980 to 2020 and calculate the total sales for each year for the given region
 	for (let year = 1980; year <= 2020; year++) {
-		// Filter the sales data for the current year
 		const salesDataForYear = filteredCSVData.filter((d) => +d.Year === year);
-		// Get the corresponding sales column for the region
 		const salesColumn = getSalesColumn(region);
 		// Calculate the total sales for the current year
 		const totalSales = d3.sum(salesDataForYear, (d) => +d[salesColumn]);
 		salesDataByYear[year] = parseFloat(totalSales.toFixed(2));
 	}
 
-	// Output the sales data object
-	console.log(salesDataByYear);
-
-	// Create an empty object to store the first year of game releases for each platform
 	const firstYearByPlatform = {};
 
-	// Loop through the filtered CSV data to find the first year of game releases for each platform
+	// Loop through the filtered CSV data to find the first year of platform releases
 	filteredCSVData.forEach((game) => {
 		const platform = game.Platform;
 		const year = +game.Year;
 
-		// If the platform is not yet recorded in the firstYearByPlatform object or if the current year is earlier than the recorded year for that platform, update the first year
 		if (!firstYearByPlatform[platform] || year < firstYearByPlatform[platform]) {
 			firstYearByPlatform[platform] = year;
 		}
 	});
-
-	// Output the result
-	console.log(firstYearByPlatform);
 
 	// Create an empty object to store the result
 	const platformsByYear = {};
@@ -112,7 +85,6 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 		'XOne',
 	];
 
-	// Loop through the firstYearByPlatform object
 	for (const platform in firstYearByPlatform) {
 		const year = firstYearByPlatform[platform];
 
@@ -124,10 +96,6 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 			}
 		}
 	}
-
-	// Output the result
-	console.log(platformsByYear);
-
 	// =================================================================
 
 	// Tool Tip ================================================================
@@ -160,7 +128,6 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	const margin = { top: 50, right: 50, bottom: 50, left: 50 };
 	const chartWidth = width - margin.left - margin.right;
 	const chartHeight = height - margin.top - margin.bottom;
-	// Create the SVG element for the scatter plot
 	// Create the SVG element for the line chart
 	const lineSvg = d3.select('#lineChart').append('svg').attr('width', width).attr('height', height);
 
@@ -228,7 +195,8 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 	}
 
 	// Draw the x-axis
-	const xAxis = d3.axisBottom(xScale);
+	const xAxisFormat = d3.format('.0f');
+	const xAxis = d3.axisBottom(xScale).tickFormat(xAxisFormat);
 	chart.append('g').attr('transform', `translate(0, ${chartHeight})`).call(xAxis);
 
 	// Draw the y-axis
@@ -277,16 +245,16 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 			.append('line')
 			.attr('x1', (d) => xScale(d[0]))
 			.attr('y1', (d) => yScale(salesDataByYear[d[0]]))
-			.attr('x2', (d, i) => xScale(d[0]) + lineX2[i]) // Offset the line to the right of the circle
-			.attr('y2', (d, i) => yScale(salesDataByYear[d[0]]) + lineY2[i]) // Offset the line above the circle
+			.attr('x2', (d, i) => xScale(d[0]) + lineX2[i])
+			.attr('y2', (d, i) => yScale(salesDataByYear[d[0]]) + lineY2[i])
 			.attr('stroke', 'black')
 			.attr('stroke-width', 1);
 
 		// Add HTML elements for the annotations
 		annotations
 			.append('foreignObject')
-			.attr('x', (d, i) => xScale(d[0]) + tagX2[i]) // Offset the HTML element to the right of the circle
-			.attr('y', (d, i) => yScale(salesDataByYear[d[0]]) + tagY2[i]) // Offset the HTML element above the circle
+			.attr('x', (d, i) => xScale(d[0]) + tagX2[i])
+			.attr('y', (d, i) => yScale(salesDataByYear[d[0]]) + tagY2[i])
 			.attr('width', 80)
 			.attr('height', 50)
 			.html((d) => `<div class="annotation-text">${d[1].join(',')} Released</div>`);
@@ -305,8 +273,6 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	startYearSlider.value = defaultStartYear;
 	endYearSlider.value = defaultEndYear;
-
-	console.log(startYear, endYear);
 
 	updateYearRange();
 
@@ -361,16 +327,16 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 
 	const playButton = document.getElementById('playButton');
 
-	let isPlaying = false; // Variable to keep track of the play/pause state
-	let playInterval; // Variable to store the interval ID for the play loop
+	let isPlaying = false;
+	let playInterval;
 	let year = 1980;
 
 	playButton.addEventListener('click', function () {
 		if (isPlaying) {
 			// If playing, pause the play loop
 			isPlaying = false;
-			clearInterval(playInterval); // Stop the play loop
-			playButton.textContent = 'Play'; // Change the button text to "Play"
+			clearInterval(playInterval);
+			playButton.textContent = 'Play';
 		} else {
 			// If not playing, start the play loop
 			isPlaying = true;
@@ -400,20 +366,18 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 					// Position the tooltip below the h1 element with id "pageTitle"
 					const pageTitleElement = document.getElementById('pageTitle');
 					const pageTitleRect = pageTitleElement.getBoundingClientRect();
-					console.log(pageTitleRect.left, pageTitleRect.bottom);
 					const pageX = pageTitleRect.left + 50;
-					const pageY = pageTitleRect.bottom + 40; // Add some padding between h1 element and tooltip
+					const pageY = pageTitleRect.bottom + 40;
 
 					tooltipDiv.style('left', `${pageX + x}px`).style('top', `${pageY + y}px`);
 				}
 
 				if (year >= endYear) {
-					// If the current year is greater than or equal to the end year, stop the play loop
 					isPlaying = false;
-					playButton.textContent = 'Play'; // Change the button text to "Play"
+					playButton.textContent = 'Play';
 					return;
 				}
-				// Update the left handle and right handle, then trigger the "input" event for both
+				// Update the left and right handle
 				endYearSlider.value = year;
 				endYearSlider.dispatchEvent(new Event('input', { bubbles: true }));
 
@@ -421,10 +385,10 @@ d3.csv('https://raw.githubusercontent.com/Yunado/narrative-viz-video-game-sales/
 				startYearSlider.dispatchEvent(new Event('input', { bubbles: true }));
 
 				year++;
-				playInterval = setTimeout(playLoop, 500); // Delay the next iteration by 1 second
+				playInterval = setTimeout(playLoop, 500);
 			}
 
-			playButton.textContent = 'Pause'; // Change the button text to "Pause"
+			playButton.textContent = 'Pause';
 			playLoop();
 		}
 	});

@@ -36,10 +36,6 @@ Promise.all([
 			}
 		}
 	});
-	// console.log(isoN3Lookup);
-	// console.log(euCountries);
-	// console.log(naCountries);
-	// console.log(japanCountries);
 
 	// Append map background with different colors for continent and country
 	svg.append('g')
@@ -49,16 +45,15 @@ Promise.all([
 		.append('path')
 		.attr('d', path)
 		.attr('fill', function (d) {
-			console.log(d.id);
 			const isoN3 = d.id; // ISO_N3 code is used as the id in world-110m.json
 			if (naCountries[isoN3]) {
-				return 'mediumseagreen'; // Fill color for North America (NA)
+				return 'mediumseagreen';
 			} else if (euCountries[isoN3]) {
-				return 'LightSkyBlue'; // Fill color for Europe (EU)
+				return 'LightSkyBlue';
 			} else if (japanCountries[isoN3]) {
-				return 'orangered'; // Fill color for Japan (JP)
+				return 'orangered';
 			} else {
-				return 'Wheat'; // Default fill color for other countries
+				return 'Wheat';
 			}
 		})
 		.attr('stroke', '#fff')
@@ -68,20 +63,8 @@ Promise.all([
 	// GAME DATA ================================================================
 	// Filter rows containing "N/A" from CSV data
 	const filteredCSVData = csvData.filter(function (d) {
-		// Customize this condition to match the columns containing "N/A"
 		return !Object.values(d).some((value) => value === 'N/A');
 	});
-
-	// Extract the years from the filtered CSV data
-	const years = filteredCSVData.map((d) => +d.Year);
-
-	// Find the minimum and maximum years
-	const minYear = Math.min(...years);
-	const maxYear = Math.max(...years);
-
-	// Output the result
-	console.log('Min Year:', minYear);
-	console.log('Max Year:', maxYear);
 
 	// Create data for circles:
 	const markers = [
@@ -93,8 +76,6 @@ Promise.all([
 	];
 
 	function updateYearRange() {
-		console.log('Start Year:', startYear);
-		console.log('End Year:', endYear);
 		// Query sales data for the range [startYear, endYear)
 		const salesData = filteredCSVData.filter((d) => d.Year >= startYear && d.Year < endYear);
 
@@ -111,7 +92,6 @@ Promise.all([
 		markers[2].sales = totalJPsales;
 		markers[3].sales = totalOtherSales;
 		markers[4].sales = totalGlobalSales;
-		console.log(markers);
 
 		document.getElementById('sliderNote').textContent = `Sales From [${startYear},${endYear})`;
 	}
@@ -165,8 +145,8 @@ Promise.all([
 
 	const playButton = document.getElementById('playButton');
 
-	let isPlaying = false; // Variable to keep track of the play/pause state
-	let playInterval; // Variable to store the interval ID for the play loop
+	let isPlaying = false;
+	let playInterval;
 
 	playButton.addEventListener('click', function () {
 		if (isPlaying) {
@@ -182,12 +162,11 @@ Promise.all([
 
 			function playLoop() {
 				if (year >= endYear) {
-					// If the current year is greater than or equal to the end year, stop the play loop
 					isPlaying = false;
-					playButton.textContent = 'Play'; // Change the button text to "Play"
+					playButton.textContent = 'Play';
 					return;
 				}
-				// Update the left handle and right handle, then trigger the "input" event for both
+				// Update the left and right handle
 				endYearSlider.value = year;
 				endYearSlider.dispatchEvent(new Event('input', { bubbles: true }));
 
@@ -195,10 +174,10 @@ Promise.all([
 				startYearSlider.dispatchEvent(new Event('input', { bubbles: true }));
 
 				year++;
-				playInterval = setTimeout(playLoop, 300); // Delay the next iteration by 1 second
+				playInterval = setTimeout(playLoop, 300);
 			}
 
-			playButton.textContent = 'Pause'; // Change the button text to "Pause"
+			playButton.textContent = 'Pause';
 			playLoop();
 		}
 	});
@@ -218,7 +197,7 @@ Promise.all([
 			.style('opacity', 1)
 			.html(d.name + '<br>' + 'Game Sold: ' + d.sales + 'M')
 			.style('left', event.pageX + 'px')
-			.style('top', event.pageY + 'px'); // Show the tooltip at the location of the mouse pointer
+			.style('top', event.pageY + 'px');
 	}
 
 	function mouseleave(event, d) {
@@ -249,7 +228,7 @@ Promise.all([
 		.append('circle')
 		.attr('cx', (d) => projection([d.long, d.lat])[0])
 		.attr('cy', (d) => projection([d.long, d.lat])[1])
-		.attr('r', (d) => radiusScale(+d.sales)) // Use the scale to set the initial circle radius based on sales
+		.attr('r', (d) => radiusScale(+d.sales))
 		.attr('class', 'circle')
 		.style('fill', '#fff')
 		.attr('stroke', '#69b3a2')
@@ -262,26 +241,26 @@ Promise.all([
 	circles
 		.append('text')
 		.attr('x', (d) => projection([d.long, d.lat])[0])
-		.attr('y', (d) => projection([d.long, d.lat])[1] + 4) // Adjust the y-offset to center the text inside the circle
+		.attr('y', (d) => projection([d.long, d.lat])[1] + 4)
 		.attr('text-anchor', 'middle')
 		.style('cursor', 'pointer')
 		.style('font-size', '15px')
 		.style('font-weight', 'bold')
-		.style('user-select', 'none') // Add this line to prevent text selection
-		.text((d) => d.sales + 'M'); // Initial text content
+		.style('user-select', 'none')
+		.text((d) => d.sales + 'M');
 
 	// Function to smoothly update the sales text in the circles
 	function updateSalesText() {
-		circles.select('text').text((d) => d.sales + 'M'); // Update the text content with the updated sales data
+		circles.select('text').text((d) => d.sales + 'M');
 	}
 
 	// Function to smoothly update the circle radius based on sales
 	function updateCircleRadius() {
 		circles
 			.select('circle')
-			.transition() // Add a transition for smooth interpolation
-			.duration(500) // Set the transition duration (in milliseconds)
-			.attr('r', (d) => radiusScale(+d.sales)); // Update the circle radius based on sales
+			.transition()
+			.duration(500)
+			.attr('r', (d) => radiusScale(+d.sales));
 	}
 
 	//================================================================
@@ -292,7 +271,6 @@ Promise.all([
 	});
 
 	function navigateToDetailsPage(region) {
-		// Navigate to the details page with the region name and slider values as query parameters
 		window.location.href = `details.html?region=${encodeURIComponent(
 			region
 		)}&startYear=${startYear}&endYear=${endYear}`;
